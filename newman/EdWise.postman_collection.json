@@ -1,0 +1,4496 @@
+{
+	"info": {
+		"_postman_id": "daf400b7-e878-406f-9814-6e1ddffeda2d",
+		"name": "EdWise",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38474672"
+	},
+	"item": [
+		{
+			"name": "UserPage",
+			"item": [
+				{
+					"name": "filters",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const csvData = pm.iterationData.toObject();\r",
+									"\r",
+									"pm.environment.set(\"user\", csvData.User);\r",
+									"pm.environment.set(\"Role\", csvData.Role);\r",
+									"pm.environment.set(\"School\", csvData.School);\r",
+									"pm.environment.set(\"Category\", csvData.Category);\r",
+									"pm.environment.set(\"Approver1\",csvData.Approver1);\r",
+									"pm.environment.set(\"Approver2\",csvData.Approver2);\r",
+									"pm.environment.set(\"Approver3\",csvData.Approver3);\r",
+									"pm.environment.set(\"RoleApprover1\",csvData.RoleApprover1);\r",
+									"pm.environment.set(\"RoleApprover2\",csvData.RoleApprover2);\r",
+									"pm.environment.set(\"RoleApprover3\",csvData.RoleApprover3);\r",
+									"pm.environment.set(\"Note\", csvData.Note);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/education-organizations/filters",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"education-organizations",
+								"filters"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"//userId\r",
+									"const user = pm.environment.get(\"user\");\r",
+									"var jsonData = pm.response.json();\r",
+									"const userName = jsonData.find(item => item.name === user);\r",
+									"pm.environment.set('IdUser', userName.userId);\r",
+									"//approver1 id\r",
+									"const approver1 = pm.environment.get(\"Approver1\");\r",
+									"const Approver1= jsonData.find(item=> item.name === approver1);\r",
+									" pm.environment.set('IdApprover1', Approver1.userId);\r",
+									"//approver2 id\r",
+									"const approver2 = pm.environment.get(\"Approver2\");\r",
+									"const Approver2= jsonData.find(item=> item.name === approver2);\r",
+									" pm.environment.set('IdApprover2', Approver2.userId);\r",
+									"//approver3 id\r",
+									"const approver3 = pm.environment.get(\"Approver3\");\r",
+									"const Approver3= jsonData.find(item=> item.name === approver3);\r",
+									" pm.environment.set('IdApprover3', Approver3.userId);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/configuration/users",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"configuration",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "selectUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"const role = pm.environment.get(\"Role\");\r",
+									"const role1 = pm.environment.get(\"RoleApprover1\");\r",
+									"const role2 = pm.environment.get(\"RoleApprover2\");\r",
+									"const role3 = pm.environment.get(\"RoleApprover3\");\r",
+									"\r",
+									"\r",
+									"const user = jsonData.roles.find(item => item.name === role); \r",
+									"pm.environment.set('IdRole', user.roleId);\r",
+									"const approver1 = jsonData.roles.find(item => item.name === role1); \r",
+									"pm.environment.set('IdroleApprover1', approver1.roleId);\r",
+									"const approver2 = jsonData.roles.find(item => item.name === role2); \r",
+									"pm.environment.set('IdroleApprover2', approver2.roleId);\r",
+									"const approver3 = jsonData.roles.find(item => item.name === role3); \r",
+									"pm.environment.set('IdroleApprover3', approver3.roleId);\r",
+									"\r",
+									"const cat = pm.environment.get(\"Category\");\r",
+									"const id = jsonData.categories.find(item => item.categoryName === cat);\r",
+									"pm.environment.set('CategoryID', id.categoryId);\r",
+									"\r",
+									"const organization = pm.environment.get(\"School\");\r",
+									"const organizationsId = jsonData.organizations.find(item => item.organizationName === organization);\r",
+									"pm.environment.set('organizationId',organizationsId.organizationId);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/configuration/user-roles?userId={{IdUser}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"configuration",
+								"user-roles"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{IdUser}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "selectRole",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/configuration/role-permissions?roleId={{IdRole}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"configuration",
+								"role-permissions"
+							],
+							"query": [
+								{
+									"key": "roleId",
+									"value": "{{IdRole}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "address",
+			"item": [
+				{
+					"name": "organisation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/education-organizations/categories?educationOrganizationId={{organizationId}}&schoolYearId=1",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"education-organizations",
+								"categories"
+							],
+							"query": [
+								{
+									"key": "educationOrganizationId",
+									"value": "{{organizationId}}"
+								},
+								{
+									"key": "schoolYearId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/changerequest/get-section-status?categoryId={{CategoryID}}&educationOrganizationId={{organizationId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"get-section-status"
+							],
+							"query": [
+								{
+									"key": "categoryId",
+									"value": "{{CategoryID}}"
+								},
+								{
+									"key": "educationOrganizationId",
+									"value": "{{organizationId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addressType",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const csvData = pm.iterationData.toObject();\r",
+									"//const change = pm.iterationData.get(\"reasonForChange\");\r",
+									"pm.environment.set(\"reasonForChange\", csvData.reasonForChange);\r",
+									"pm.environment.set(\"CountryCode\", csvData.CountyCode);\r",
+									"pm.environment.set(\"streetNumberName\", csvData.streetNumberName);\r",
+									"pm.environment.set(\"BuildingSiteNumber\", csvData.BuildingSiteNumber);\r",
+									"pm.environment.set(\"city\",csvData.City);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/descriptor/lookups?descriptorTypeId=14",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"descriptor",
+								"lookups"
+							],
+							"query": [
+								{
+									"key": "descriptorTypeId",
+									"value": "14"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "countryCode",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"const country = pm.environment.get(\"CountryCode\"); \r",
+									"var jsonData = pm.response.json();\r",
+									"const countryName = jsonData.find(item => item.valueName === country);\r",
+									"pm.environment.set('countryId', countryName.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/descriptor/lookups?descriptorTypeId=45",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"descriptor",
+								"lookups"
+							],
+							"query": [
+								{
+									"key": "descriptorTypeId",
+									"value": "45"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "address details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/education-organizations/address-details?isPrimary=True&isPhoneDetails=False&typeId=0&educationOrganizationId={{organizationId}}&schoolYearId=1",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"education-organizations",
+								"address-details"
+							],
+							"query": [
+								{
+									"key": "isPrimary",
+									"value": "True"
+								},
+								{
+									"key": "isPhoneDetails",
+									"value": "False"
+								},
+								{
+									"key": "typeId",
+									"value": "0"
+								},
+								{
+									"key": "educationOrganizationId",
+									"value": "{{organizationId}}"
+								},
+								{
+									"key": "schoolYearId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json; charset=utf-8"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"changeRequestId\":0,\"changeRequestActionId\":0,\"educationOrganizationId\":{{organizationId}},\"organizationName\":null,\"sectionId\":2,\"categoryName\":null,\"sectionName\":\"Address\",\"categoryId\":{{CategoryID}},\"effectiveType\":1,\"userId\":{{IdUser}},\"effectiveDate\":\"2024-09-18T14:25:13.703+05:30\",\"expiryDate\":\"0001-01-01T00:00:00\",\"overrideRequestId\":null,\"isActive\":false,\"originalJson\":\"{\\u0022AddressTypeId\\u0022:120,\\u0022AddressTypeName\\u0022:\\u0022Physical\\u0022,\\u0022StreetNumberName\\u0022:\\u0022County Rd 2052 #11\\u0022,\\u0022BuildingSiteNumber\\u0022:\\u0022Suite 301\\u0022,\\u0022CongressionalDistrict\\u0022:null,\\u0022CountyCode\\u0022:0,\\u0022CountyCodeName\\u0022:null,\\u0022StateDescriptorId\\u0022:229,\\u0022StateDescriptor\\u0022:\\u0022AZ\\u0022,\\u0022City\\u0022:\\u0022Alpine\\u0022,\\u0022PostalCode\\u0022:\\u002285920\\u0022,\\u0022IsPrimary\\u0022:false,\\u0022IsDeleted\\u0022:false,\\u0022DocumentName\\u0022:[],\\u0022isNew\\u0022:false}\",\"addedJson\":null,\"updatedJson\":\"{\\u0022AddressTypeId\\u0022:120,\\u0022AddressTypeName\\u0022:\\u0022Physical\\u0022,\\u0022StreetNumberName\\u0022:\\u0022{{streetNumberName}}\\u0022,\\u0022BuildingSiteNumber\\u0022:\\u0022{{BuildingSiteNumber}}\\u0022,\\u0022CongressionalDistrict\\u0022:\\u0022\\u0022,\\u0022CountyCode\\u0022:{{countryId}},\\u0022CountyCodeName\\u0022:\\u0022{{CountryCode}}\\u0022,\\u0022StateDescriptorId\\u0022:0,\\u0022StateDescriptor\\u0022:null,\\u0022City\\u0022:\\u0022{{city}}\\u0022,\\u0022PostalCode\\u0022:\\u002285920-8888\\u0022,\\u0022IsPrimary\\u0022:false,\\u0022IsDeleted\\u0022:false,\\u0022DocumentName\\u0022:[],\\u0022isNew\\u0022:false}\",\"deletedJson\":null,\"documents\":[],\"submittedBy\":null,\"submittedOn\":null,\"effectDate\":null,\"status\":null,\"reasonForChange\":\"{{reasonForChange}}\",\"bloburl\":null,\"userName\":null,\"removedUploadedDocuments\":[],\"statusId\":0}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/changerequest/create",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "changeRequest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"const responseData = pm.response.json();\r",
+									"\r",
+									"const organisation = responseData.find(item => item.status === \"Draft\" && item.sectionName === \"Address\");\r",
+									"if (organisation) {\r",
+									"    pm.environment.set('changeRequestId', organisation.changeRequestId);\r",
+									"  \r",
+									"} else {\r",
+									"    console.log(\"No organization with status 'Draft' and category 'Address' found\");\r",
+									"}\r",
+									"  pm.environment.set(\"sectionId\", organisation.sectionId);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json; charset=utf-8"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"schoolYearId\":1,\"educationOrganizationId\":0,\"categoryId\":0,\"categoryName\":\"\",\"isFocusToDetails\":false,\"organizationIds\":[4161,4178,4443,5482,576,4169,4171,5484,4453,5480,4177,4160,5474,4179,4174,5472,5473,4437,5477,4167,5479,4352,4374,5475,4163,5239,5478,4176,5027,5476,4155,4172,4175,5481,5380,4173,4153,4168,4197,4162,5483,5485,4170,4154],\"categoryIds\":[8,9,10,11,12,13,14,15,16,17,18,19,20,21],\"userId\":11,\"roleId\":0,\"isAllCategories\":false,\"isAllOrganizations\":false,\"isAllStatuses\":false,\"status\":null}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/changerequest/get-all-requests?educationOrganizationId={{organizationId}}&categoryId={{CategoryID}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"get-all-requests"
+							],
+							"query": [
+								{
+									"key": "educationOrganizationId",
+									"value": "{{organizationId}}"
+								},
+								{
+									"key": "categoryId",
+									"value": "{{CategoryID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "submit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/changerequest/submit-requests?requestId={{changeRequestId}}&categoryId={{CategoryID}}&sectionId=2",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"submit-requests"
+							],
+							"query": [
+								{
+									"key": "requestId",
+									"value": "{{changeRequestId}}"
+								},
+								{
+									"key": "categoryId",
+									"value": "{{CategoryID}}"
+								},
+								{
+									"key": "sectionId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "changedRequest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 500\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"const id =pm.environment.get(\"changeRequestId\")\r",
+									"pm.environment.set(\"AddressId\",id);\r",
+									"\r",
+									"pm.execution.setNextRequest(\"approver1\")"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/changerequest/request-section-details?sectionId=2&changeRequestId={{changeRequestId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"request-section-details"
+							],
+							"query": [
+								{
+									"key": "sectionId",
+									"value": "2"
+								},
+								{
+									"key": "changeRequestId",
+									"value": "{{changeRequestId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "phone",
+			"item": [
+				{
+					"name": "typeId",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const csvData = pm.iterationData.toObject();\r",
+									"pm.environment.set(\"phoneNumberType\", csvData.PhoneNumberType);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"const type = pm.environment.get(\"phoneNumberType\");\r",
+									"const phoneData = pm.response.json();\r",
+									"const phoneid = phoneData.find(item => item.valueName === type);\r",
+									"pm.environment.set(\"phoneNumberTypeId\", phoneid.id);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/descriptor/lookups?descriptorTypeId=14",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"descriptor",
+								"lookups"
+							],
+							"query": [
+								{
+									"key": "descriptorTypeId",
+									"value": "14"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/education-organizations/address-details?isPrimary=True&isPhoneDetails=True&typeId=0&educationOrganizationId={{organizationId}}&schoolYearId=1",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"education-organizations",
+								"address-details"
+							],
+							"query": [
+								{
+									"key": "isPrimary",
+									"value": "True"
+								},
+								{
+									"key": "isPhoneDetails",
+									"value": "True"
+								},
+								{
+									"key": "typeId",
+									"value": "0"
+								},
+								{
+									"key": "educationOrganizationId",
+									"value": "{{organizationId}}"
+								},
+								{
+									"key": "schoolYearId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "phoneDetails",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const csvData = pm.iterationData.toObject();\r",
+									"\r",
+									"pm.environment.set(\"phoneNumber\", csvData.phoneNumber);\r",
+									"pm.environment.set(\"ChangeReason\", csvData.ChangeReason);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/education-organizations/address-details?isPrimary=False&isPhoneDetails=True&typeId={{phoneNumberTypeId}}&educationOrganizationId={{organizationId}}&schoolYearId=0",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"education-organizations",
+								"address-details"
+							],
+							"query": [
+								{
+									"key": "isPrimary",
+									"value": "False"
+								},
+								{
+									"key": "isPhoneDetails",
+									"value": "True"
+								},
+								{
+									"key": "typeId",
+									"value": "{{phoneNumberTypeId}}"
+								},
+								{
+									"key": "educationOrganizationId",
+									"value": "{{organizationId}}"
+								},
+								{
+									"key": "schoolYearId",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json; charset=utf-8"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"changeRequestId\":0,\"changeRequestActionId\":0,\"educationOrganizationId\":{{organizationId}},\"organizationName\":null,\"sectionId\":3,\"categoryName\":null,\"sectionName\":\"Phone\",\"categoryId\":{{CategoryID}},\"effectiveType\":1,\"userId\":{{IdUser}},\"effectiveDate\":\"2024-09-19T11:40:39.981+05:30\",\"expiryDate\":\"0001-01-01T00:00:00\",\"overrideRequestId\":null,\"isActive\":false,\"originalJson\":\"{\\u0022PhoneNumberTypeId\\u0022:120,\\u0022PhoneNumberType\\u0022:\\u0022Physical\\u0022,\\u0022PhoneNumber\\u0022:\\u0022(765) 765-1111\\u0022,\\u0022IsPrimary\\u0022:false,\\u0022IsDeleted\\u0022:false,\\u0022DocumentName\\u0022:[],\\u0022isNew\\u0022:false}\",\"addedJson\":null,\"updatedJson\":\"{\\u0022PhoneNumberTypeId\\u0022:{{phoneNumberTypeId}},\\u0022PhoneNumberType\\u0022:\\u0022{{phoneNumberType}}\\u0022,\\u0022PhoneNumber\\u0022:\\u0022{{phoneNumber}}\\u0022,\\u0022IsPrimary\\u0022:false,\\u0022IsDeleted\\u0022:false,\\u0022DocumentName\\u0022:[],\\u0022isNew\\u0022:false}\",\"deletedJson\":null,\"documents\":[],\"submittedBy\":null,\"submittedOn\":null,\"effectDate\":null,\"status\":null,\"reasonForChange\":\"{{Note}}\",\"bloburl\":null,\"userName\":null,\"removedUploadedDocuments\":[],\"statusId\":0}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/changerequest/create",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"const organisation = pm.response.json().find(item => item.sectionName === \"Phone\"&& item.status === \"Draft\");\r",
+									"pm.environment.set(\"sectionId\",organisation.sectionId)\r",
+									"if (organisation) {\r",
+									"    pm.environment.set('changeRequestId', organisation.changeRequestId);\r",
+									"} else {\r",
+									"    console.log(\"No organization with status 'Draft' found\");\r",
+									"}\r",
+									"pm.environment.set(\"sectionId\",organisation.sectionId)\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json; charset=utf-8"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"schoolYearId\":1,\"educationOrganizationId\":0,\"categoryId\":0,\"categoryName\":\"\",\"isFocusToDetails\":false,\"organizationIds\":[4161,4178,4443,5482,576,4169,4171,5484,4453,5480,4177,4160,5474,4179,4174,5472,5473,4437,5477,4167,5479,4352,4374,5475,4163,5239,5478,4176,5027,5476,4155,4172,4175,5481,5380,4173,4153,4168,4197,4162,5483,5485,4170,4154],\"categoryIds\":[8,9,10,11,12,13,14,15,16,17,18,19,20,21],\"userId\":11,\"roleId\":0,\"isAllCategories\":false,\"isAllOrganizations\":false,\"isAllStatuses\":false,\"status\":null}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/changerequest/get-all-requests?educationOrganizationId={{organizationId}}&categoryId={{CategoryID}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"get-all-requests"
+							],
+							"query": [
+								{
+									"key": "educationOrganizationId",
+									"value": "{{organizationId}}"
+								},
+								{
+									"key": "categoryId",
+									"value": "{{CategoryID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "submit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Microsoft Edge\";v=\"129\", \"Not=A?Brand\";v=\"8\", \"Chromium\";v=\"129\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/changerequest/submit-requests?requestId={{changeRequestId}}&categoryId={{CategoryID}}&sectionId=3",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"submit-requests"
+							],
+							"query": [
+								{
+									"key": "requestId",
+									"value": "{{changeRequestId}}"
+								},
+								{
+									"key": "categoryId",
+									"value": "{{CategoryID}}"
+								},
+								{
+									"key": "sectionId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "changeRequest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"const id = pm.environment.get(\"changeRequestId\");\r",
+									"pm.environment.set(\"phoneRequest\", id);\r",
+									"pm.execution.setNextRequest(\"approver1\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/changerequest/request-section-details?sectionId=3&changeRequestId={{changeRequestId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"request-section-details"
+							],
+							"query": [
+								{
+									"key": "sectionId",
+									"value": "3"
+								},
+								{
+									"key": "changeRequestId",
+									"value": "{{changeRequestId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "website",
+			"item": [
+				{
+					"name": "webRequest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const csvData = pm.iterationData.toObject();\r",
+									"pm.environment.set(\"WebLink\", csvData.webLink);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/education-organizations/header-details?categoryId={{CategoryID}}&educationOrganizationId={{organizationId}}&schoolYearId=1",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"education-organizations",
+								"header-details"
+							],
+							"query": [
+								{
+									"key": "categoryId",
+									"value": "{{CategoryID}}"
+								},
+								{
+									"key": "educationOrganizationId",
+									"value": "{{organizationId}}"
+								},
+								{
+									"key": "schoolYearId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json; charset=utf-8"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"changeRequestId\":0,\"changeRequestActionId\":0,\"educationOrganizationId\":{{organizationId}},\"organizationName\":null,\"sectionId\":4,\"categoryName\":null,\"sectionName\":\"Website\",\"categoryId\":{{CategoryID}},\"effectiveType\":1,\"userId\":{{IdUser}},\"effectiveDate\":\"2024-09-19T14:52:12.693+05:30\",\"expiryDate\":\"0001-01-01T00:00:00\",\"overrideRequestId\":null,\"isActive\":false,\"originalJson\":\"{\\u0022WebSite\\u0022:\\u0022http://www.apacheelementary.org//\\u0022,\\u0022DocumentName\\u0022:[],\\u0022isNew\\u0022:false}\",\"addedJson\":null,\"updatedJson\":\"{\\u0022WebSite\\u0022:\\u0022http:{{WebLink}}\\u0022,\\u0022DocumentName\\u0022:[],\\u0022isNew\\u0022:false}\",\"deletedJson\":null,\"documents\":[],\"submittedBy\":null,\"submittedOn\":null,\"effectDate\":null,\"status\":null,\"reasonForChange\":\"{{Note}}\",\"bloburl\":null,\"userName\":null,\"removedUploadedDocuments\":[],\"statusId\":0}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/changerequest/create",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"const organisation = pm.response.json().find(item => item.sectionName === \"Website\"&& item.status === \"Draft\");\r",
+									"\r",
+									"if (organisation) {\r",
+									"    pm.environment.set('changeRequestId', organisation.changeRequestId);\r",
+									"} else {\r",
+									"    console.log(\"No organization with status 'Draft' found\");\r",
+									"}\r",
+									"pm.environment.set(\"sectionId\",organisation.sectionId);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json; charset=utf-8"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"schoolYearId\":1,\"educationOrganizationId\":0,\"categoryId\":0,\"categoryName\":\"\",\"isFocusToDetails\":false,\"organizationIds\":[{{organizationId}}],\"categoryIds\":[{{CategoryID}}],\"userId\":{{IdUser}},\"roleId\":0,\"isAllCategories\":false,\"isAllOrganizations\":false,\"isAllStatuses\":false,\"status\":null}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/changerequest/get-requests",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"get-requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "submit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Microsoft Edge\";v=\"129\", \"Not=A?Brand\";v=\"8\", \"Chromium\";v=\"129\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/changerequest/submit-requests?requestId={{changeRequestId}}&categoryId={{CategoryID}}&sectionId=4",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"submit-requests"
+							],
+							"query": [
+								{
+									"key": "requestId",
+									"value": "{{changeRequestId}}"
+								},
+								{
+									"key": "categoryId",
+									"value": "{{CategoryID}}"
+								},
+								{
+									"key": "sectionId",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "changeRequest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"pm.execution.setNextRequest(\"approver1\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/changerequest/request-section-details?sectionId=4&changeRequestId={{changeRequestId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"request-section-details"
+							],
+							"query": [
+								{
+									"key": "sectionId",
+									"value": "4"
+								},
+								{
+									"key": "changeRequestId",
+									"value": "{{changeRequestId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "approver1",
+			"item": [
+				{
+					"name": "approver1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/configuration/user-roles?userId={{IdApprover1}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"configuration",
+								"user-roles"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{IdApprover1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "selectrole1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/configuration/role-permissions?roleId={{IdroleApprover1}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"configuration",
+								"role-permissions"
+							],
+							"query": [
+								{
+									"key": "roleId",
+									"value": "{{IdroleApprover1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RequestSummary",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json; charset=utf-8"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"schoolYearId\":1,\"educationOrganizationId\":0,\"categoryId\":0,\"categoryName\":\"\",\"isFocusToDetails\":false,\"organizationIds\":[4443,5482,576,4169,4171,5484,4453,5480,4160,5474,5472,5473,4437,5477,5479,4352,1529,4374,5475,5239,5287,5478,5027,5476,4155,5481,5380,4153,4225,4197,4162,5483,5485],\"categoryIds\":[8,9,10,11,12,13,14,15,16,17,18,19,20,21],\"userId\":{{IdApprover1}},\"roleId\":{{IdroleApprover1}},\"isAllCategories\":false,\"isAllOrganizations\":true,\"isAllStatuses\":true,\"status\":null}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/changerequest/get-approver-summary",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"get-approver-summary"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "assign",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/changerequest/assign-requests?userId={{IdApprover1}}&level=1&changeRequestId={{changeRequestId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"assign-requests"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{IdApprover1}}"
+								},
+								{
+									"key": "level",
+									"value": "1"
+								},
+								{
+									"key": "changeRequestId",
+									"value": "{{changeRequestId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "summary",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json; charset=utf-8"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"schoolYearId\":1,\"educationOrganizationId\":0,\"categoryId\":0,\"categoryName\":\"\",\"isFocusToDetails\":false,\"organizationIds\":[4443,5482,576,4169,4171,5484,4453,5480,4160,5474,5472,5473,4437,5477,5479,4352,1529,4374,5475,5239,5287,5478,5027,5476,4155,5481,5380,4153,4225,4197,4162,5483,5485],\"categoryIds\":[8,9,10,11,12,13,14,15,16,17,18,19,20,21],\"userId\":{{IdApprover1}},\"roleId\":{{IdroleApprover1}},\"isAllCategories\":false,\"isAllOrganizations\":true,\"isAllStatuses\":true,\"status\":null}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/changerequest/get-approver-summary",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"get-approver-summary"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "request",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"//pm.environment.set(\"StatusName\", csvData.Status);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/changerequest/request-section-details?sectionId={{sectionId}}&changeRequestId={{changeRequestId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"request-section-details"
+							],
+							"query": [
+								{
+									"key": "sectionId",
+									"value": "{{sectionId}}"
+								},
+								{
+									"key": "changeRequestId",
+									"value": "{{changeRequestId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "approved",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"const id2 =pm.environment.get(\"changeRequestId\")\r",
+									"console.log(\"approver1\",id2)\r",
+									"\r",
+									"pm.execution.setNextRequest(\"approver2\")\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json; charset=utf-8"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"changeRequestActionNoteId\": 0,\r\n    \"changeRequestActionId\": 0,\r\n    \"changeRequestId\": 0,\r\n    \"notes\": \"{{Note}}\",\r\n    \"internalNotes\": null,\r\n    \"isInternal\": false,\r\n    \"requestId\": {{changeRequestId}},\r\n    \"status\": 5,\r\n    \"approver2Status\": null,\r\n    \"approver3Status\": null,\r\n    \"statusName\": null,\r\n    \"approvalLevel\": 1,\r\n    \"userId\": {{IdApprover1}},\r\n    \"reviewedUserId\": 0,\r\n    \"approvedBy\": null,\r\n    \"approvedOn\": null,\r\n    \"lastModifiedDate\": \"0001-01-01T00:00:00\",\r\n    \"reviewedUserApprovalLevelId\": 0,\r\n    \"requestStatus\": 0,\r\n    \"visibleInternalNotes\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/changerequest/submit-review",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"submit-review"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "approver2",
+			"item": [
+				{
+					"name": "approver2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Microsoft Edge\";v=\"129\", \"Not=A?Brand\";v=\"8\", \"Chromium\";v=\"129\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/configuration/user-roles?userId={{IdApprover2}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"configuration",
+								"user-roles"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{IdApprover2}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "selectrole2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Microsoft Edge\";v=\"129\", \"Not=A?Brand\";v=\"8\", \"Chromium\";v=\"129\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/configuration/role-permissions?roleId={{IdroleApprover2}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"configuration",
+								"role-permissions"
+							],
+							"query": [
+								{
+									"key": "roleId",
+									"value": "{{IdroleApprover2}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RequestSummery2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json; charset=utf-8"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Microsoft Edge\";v=\"129\", \"Not=A?Brand\";v=\"8\", \"Chromium\";v=\"129\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"schoolYearId\":1,\"educationOrganizationId\":0,\"categoryId\":0,\"categoryName\":\"\",\"isFocusToDetails\":false,\"organizationIds\":[4443,5482,576,4169,4171,5484,4453,5480,4160,5474,5472,5473,4437,5477,5479,4352,1529,4374,5475,5239,5287,5478,5027,5476,4155,4172,5481,5380,4153,4225,4197,4162,5483,5485],\"categoryIds\":[8,9,10,11,12,13,14,15,16,17,18,19,20,21],\"userId\":28,\"roleId\":2,\"isAllCategories\":false,\"isAllOrganizations\":true,\"isAllStatuses\":true,\"status\":null}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/changerequest/get-approver-summary",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"get-approver-summary"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "assign",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/changerequest/assign-requests?userId={{IdApprover2}}&level=2&changeRequestId={{changeRequestId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"assign-requests"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{IdApprover2}}"
+								},
+								{
+									"key": "level",
+									"value": "2"
+								},
+								{
+									"key": "changeRequestId",
+									"value": "{{changeRequestId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "request",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"//pm.environment.set(\"StatusName\", csvData.Status);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/changerequest/request-section-details?sectionId={{sectionId}}&changeRequestId={{changeRequestId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"request-section-details"
+							],
+							"query": [
+								{
+									"key": "sectionId",
+									"value": "{{sectionId}}"
+								},
+								{
+									"key": "changeRequestId",
+									"value": "{{changeRequestId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "approved2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"pm.execution.setNextRequest(\"approver3\")"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json; charset=utf-8"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Microsoft Edge\";v=\"129\", \"Not=A?Brand\";v=\"8\", \"Chromium\";v=\"129\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"changeRequestActionNoteId\": 0,\r\n    \"changeRequestActionId\": 0,\r\n    \"changeRequestId\": 0,\r\n    \"notes\": \"{{Note}}\",\r\n    \"internalNotes\": null,\r\n    \"isInternal\": false,\r\n    \"requestId\": {{changeRequestId}},\r\n    \"status\": 5,\r\n    \"approver2Status\": 5,\r\n    \"approver3Status\": null,\r\n    \"statusName\": null,\r\n    \"approvalLevel\": 2,\r\n    \"userId\": {{IdApprover2}},\r\n    \"reviewedUserId\": 0,\r\n    \"approvedBy\": null,\r\n    \"approvedOn\": null,\r\n    \"lastModifiedDate\": \"0001-01-01T00:00:00\",\r\n    \"reviewedUserApprovalLevelId\": 0,\r\n    \"requestStatus\": 0,\r\n    \"visibleInternalNotes\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/changerequest/submit-review",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"submit-review"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "approver3",
+			"item": [
+				{
+					"name": "approver3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/configuration/user-roles?userId={{IdApprover3}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"configuration",
+								"user-roles"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{IdApprover3}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "selectRole",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/configuration/role-permissions?roleId={{IdroleApprover3}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"configuration",
+								"role-permissions"
+							],
+							"query": [
+								{
+									"key": "roleId",
+									"value": "{{IdroleApprover3}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "approverSummary",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json; charset=utf-8"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"schoolYearId\":1,\"educationOrganizationId\":0,\"categoryId\":0,\"categoryName\":\"\",\"isFocusToDetails\":false,\"organizationIds\":[4443,5482,576,4169,5484,4453,5480,4160,5474,5472,5473,4437,5477,5479,4352,1529,4374,5475,5239,5287,5478,5027,5476,4155,4172,5481,5380,4153,4225,4197,4162,5483,5485],\"categoryIds\":[8,9,10,11,12,13,14,15,16,17,18,19,20,21],\"userId\":{{IdApprover3}},\"roleId\":{{IdroleApprover3}},\"isAllCategories\":false,\"isAllOrganizations\":true,\"isAllStatuses\":true,\"status\":null}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/changerequest/get-approver-summary",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"get-approver-summary"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "assign",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/changerequest/assign-requests?userId={{IdApprover3}}&level=3&changeRequestId={{changeRequestId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"assign-requests"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{IdApprover3}}"
+								},
+								{
+									"key": "level",
+									"value": "3"
+								},
+								{
+									"key": "changeRequestId",
+									"value": "{{changeRequestId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "summary",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json; charset=utf-8"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"schoolYearId\":1,\"educationOrganizationId\":0,\"categoryId\":0,\"categoryName\":\"\",\"isFocusToDetails\":false,\"organizationIds\":[4443,5482,576,4169,5484,4453,5480,4160,5474,5472,5473,4437,5477,5479,4352,1529,4374,5475,5239,5287,5478,5027,5476,4155,4172,5481,5380,4153,4225,4197,4162,5483,5485],\"categoryIds\":[8,9,10,11,12,13,14,15,16,17,18,19,20,21],\"userId\":{{IdApprover3}},\"roleId\":{{IdroleApprover3}},\"isAllCategories\":false,\"isAllOrganizations\":true,\"isAllStatuses\":true,\"status\":null}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/changerequest/get-approver-summary",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"get-approver-summary"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sectionDetails",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/changerequest/request-section-details?sectionId={{sectionId}}&changeRequestId={{changeRequestId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"request-section-details"
+							],
+							"query": [
+								{
+									"key": "sectionId",
+									"value": "{{sectionId}}"
+								},
+								{
+									"key": "changeRequestId",
+									"value": "{{changeRequestId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "submit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json; charset=utf-8"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"changeRequestActionNoteId\":0,\"changeRequestActionId\":0,\"changeRequestId\":0,\"notes\":\"{{Note}}\",\"internalNotes\":null,\"isInternal\":false,\"requestId\":{{changeRequestId}},\"status\":5,\"approver2Status\":null,\"approver3Status\":5,\"statusName\":null,\"approvalLevel\":3,\"userId\":{{IdApprover3}},\"reviewedUserId\":0,\"approvedBy\":null,\"approvedOn\":null,\"lastModifiedDate\":\"0001-01-01T00:00:00\",\"reviewedUserApprovalLevelId\":0,\"requestStatus\":0,\"visibleInternalNotes\":false}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/changerequest/submit-review",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"submit-review"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "changedSummary",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"const id = pm.environment.get(\"changeRequestId\");\r",
+									"const phoneID=pm.environment.get(\"phoneRequest\");\r",
+									"const AddressId=pm.environment.get(\"AddressId\")\r",
+									"\r",
+									"if (id==AddressId) {\r",
+									"    pm.execution.setNextRequest(\"typeId\");\r",
+									"} else if (id==phoneID) {\r",
+									"    pm.execution.setNextRequest(\"webRequest\");\r",
+									" } else {\r",
+									"    pm.execution.setNextRequest(null);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en;q=0.9,en-US;q=0.8,en-IN;q=0.7"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json; charset=utf-8"
+							},
+							{
+								"key": "origin",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://web-edmaster-test-wtus-ui-01.azurewebsites.net/"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"schoolYearId\":1,\"educationOrganizationId\":0,\"categoryId\":0,\"categoryName\":\"\",\"isFocusToDetails\":false,\"organizationIds\":[4443,5482,576,4169,5484,4453,5480,4160,5474,5472,5473,4437,5477,5479,4352,1529,4374,5475,5239,5287,5478,5027,5476,4155,4172,5481,5380,4153,4225,4197,4162,5483,5485],\"categoryIds\":[8,9,10,11,12,13,14,15,16,17,18,19,20,21],\"userId\":{{IdApprover3}},\"roleId\":{{IdroleApprover3}},\"isAllCategories\":false,\"isAllOrganizations\":true,\"isAllStatuses\":true,\"status\":null}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/changerequest/get-approver-summary",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"changerequest",
+								"get-approver-summary"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
