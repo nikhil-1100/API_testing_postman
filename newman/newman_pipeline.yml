@@ -15,4 +15,4 @@ jobs:
         run: npm install -g newman
       - name: Run API tests
         run: |
-          newman run "38474672-daf400b7-e878-406f-9814-6e1ddffeda2d" -e "38474672-1bab6b0e-f410-4fd9-8855-6b60fdc61c3c" -d"csvData.csv"
+          newman run "newman/EdWise.postman_collection.json" -e "newman/EdWise2.postman_environment.json" -d"csvData.csv"
